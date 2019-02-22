@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Reservations</title>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- Jquery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+</head>
+
+<body>
+    <div id="bigDiv">
+        <div id="head" class="jumbotron">
+                
+                <h1 class="display-4"><i class="fas fa-fire-alt"></i>Make a Reservation at the Hotter Restaurant<i class="fas fa-fire-alt"></i></h1>
+                
+                <hr class="my-4">
+                <p>Make a reservation and hurry!</p>
+                <a class="btn btn-primary btn-lg" href="./table.html" role="button">View Tables</a>
+                <a class="btn btn-primary btn-lg" href="./home.html" role="button">Home</a>
+            </div>
+
+    <input id="name" class="form-control form-control-lg" type="text" placeholder="Name">
+    <input id="phone" class="form-control form-control-lg" type="text" placeholder="Phone Number">
+    <input id="email" class="form-control form-control-lg" type="text" placeholder="Email">
+    <input id="unique" class="form-control form-control-lg" type="text" placeholder="Unique ID">
+
+    <button id="submit-button" type="button" class="btn btn-danger">Submit</button>
+            </div>
+    <script>
+
+$(document).on("click", "#submit-button", (event) => {
+    event.preventDefault();
+
+    const Reservation = (customerName, emailAddress, phoneNumber, uniqueId) => {
+        this.customerName = customerName;
+        this.emailAddress = emailAddress;
+        this.phoneNumber = phoneNumber;
+        this.uniqueId = uniqueId;
+    }
+
+    const clearField = () => {
+        $("#name").val().empty();
+        $("#phone").val().empty();
+        $("#email").val().empty();
+        $("#unique").val().empty();
+    }
+
+    const name = $("#name").val().trim();
+    const email = $("#email").val().trim();
+    const phone = $("#phone").val().trim();
+    const uniqueID = $("#unique").val().trim();
+
+    const newReservation = new Reservation(name, email, phone, uniqueID);
+
+    if (tablesFilled < maxTables) {
+        reservation.push(newReservation);
+        $.post("/api/tables", newReservation, (data) => {
+            if (data) {
+                alert("You have successfully reserved a table");
+            }
+            else {
+                alert("An error has occured");
+            }
+        });
+        clearField();
+    }
+    else {
+        waitList.push(newReservation);
+        $.post("/api/waitlist", newReservation, (data) => {
+            if (data) {
+                alert("Unfortunately, tables are full.  You are on the wait list.");
+            }
+            else {
+                alert("An error has occured");
+            }
+        });
+        clearField();
+    }
+});
+
+    </script>
+
+    <style>
+        
+        #head{
+            text-align: center;
+        }
+
+        #bigDiv{
+            margin: 40px;
+        }
+
+        .form-control-lg{
+            margin-top: 10px;
+        }
+
+        #submit-button{
+            margin-top: 10px;
+        }
+
+    </style>
+
+</body>
+
+</html>
